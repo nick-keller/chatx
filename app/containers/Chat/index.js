@@ -14,7 +14,7 @@ import injectReducer from 'utils/injectReducer';
 import MessageBox from 'containers/Chat/MessageBox';
 import * as firebase from 'firebase';
 import { makeSelectCurrentRoomId } from 'containers/App/selectors';
-import { updateMessagesList } from 'containers/Chat/actions';
+import { receivedMessage, updateMessagesList } from 'containers/Chat/actions';
 import { makeSelectMessagesBulked } from 'containers/Chat/selectors';
 import MessageBulk from 'containers/Chat/MessageBulk';
 import styled from 'styled-components';
@@ -27,9 +27,16 @@ const MessagesContainer = styled.div`
   right: 0;
   left: 251px;
   bottom: 51px;
+  overflow-y: auto;
 `;
 
 export class Chat extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+
+  constructor(props) {
+    super(props);
+    this.messagesRef = null;
+  }
+
 
   componentDidMount() {
     this.getAllMessages(this.props.currentRoomId);
@@ -45,14 +52,23 @@ export class Chat extends React.PureComponent { // eslint-disable-line react/pre
     firebase.database().ref(`messages/${roomId}`).once('value', (snapshot) => {
       this.props.updateMessagesList(snapshot.val());
     });
+
+    if (this.messagesRef) {
+      this.messagesRef.off('child_added');
+    }
+
+    this.messagesRef = firebase.database().ref(`messages/${roomId}`);
+
+    this.messagesRef.on('child_added', (data) => {
+      this.props.receivedMessage(data.key, data.val());
+    });
   }
 
   render() {
-    console.log(this.props.messages);
     return (
       <div>
         <MessagesContainer>
-          { this.props.messages.map((bulk) => <MessageBulk {...bulk} />) }
+          { this.props.messages.map((bulk) => <MessageBulk key={bulk.id} {...bulk} />) }
         </MessagesContainer>
         <MessageBox />
       </div>
@@ -63,6 +79,7 @@ export class Chat extends React.PureComponent { // eslint-disable-line react/pre
 Chat.propTypes = {
   currentRoomId: PropTypes.string,
   updateMessagesList: PropTypes.func,
+  receivedMessage: PropTypes.func,
   messages: PropTypes.array,
 };
 
@@ -74,6 +91,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     updateMessagesList: (messages) => dispatch(updateMessagesList(messages)),
+    receivedMessage: (id, message) => dispatch(receivedMessage(id, message)),
   };
 }
 

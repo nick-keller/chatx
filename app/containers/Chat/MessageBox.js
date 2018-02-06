@@ -30,7 +30,6 @@ const Input = styled.input`
 export class MessageBox extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   onKeyPress = (evt) => {
     if (evt.key === 'Enter') {
-      console.log(this.props.currentRoomId);
       firebase.database().ref(`messages/${this.props.currentRoomId}`).push().set({
         message: evt.target.value,
         user: this.props.currentUserId,

@@ -9,7 +9,7 @@ const makeSelectLoading = () => createSelector(
 
 const makeSelectCurrentRoomId = () => createSelector(
   selectApp,
-  (appState) => appState.get('currentRoom')
+  (appState) => appState.get('currentRoom') || '',
 );
 
 const makeSelectCurrentUser = () => createSelector(

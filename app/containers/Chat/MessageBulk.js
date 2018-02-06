@@ -17,6 +17,7 @@ const Container = styled.div`
 
 const Name = styled.div`
   color: rgba(0, 0, 0, .40);
+  font-size: .8em;
 `;
 
 const Bubble = styled.div`
@@ -49,7 +50,7 @@ export class MessageBulk extends React.PureComponent { // eslint-disable-line re
         </Name>
         <Photo style={{ backgroundImage: `url(${this.props.photoURL})` }} />
         <div>
-          { this.props.messages.map((message, id) => <div><Bubble key={id}>{message}</Bubble></div>) }
+          { this.props.messages.map((message, id) => <div key={id}><Bubble>{message}</Bubble></div>) }
         </div>
       </Container>
     );
@@ -60,7 +61,7 @@ MessageBulk.propTypes = {
   user: PropTypes.string,
   displayName: PropTypes.string,
   photoURL: PropTypes.string,
-  messages: PropTypes.string,
+  messages: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
