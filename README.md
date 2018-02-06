@@ -7,5 +7,5 @@
 
 
 This project is based on [react-boilerplate](https://github.com/react-boilerplate/react-boilerplate).
- 
 
+Try it out here: https://chat-d871a.firebaseapp.com/ 
