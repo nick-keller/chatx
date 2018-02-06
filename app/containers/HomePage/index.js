@@ -19,6 +19,7 @@ import reducer from 'containers/HomePage/reducer';
 import * as firebase from 'firebase';
 import { updateUsersList } from 'containers/HomePage/actions';
 import RoomsList from 'containers/RoomsList';
+import Chat from 'containers/Chat';
 
 class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   componentDidMount() {
@@ -31,6 +32,7 @@ class HomePage extends React.PureComponent { // eslint-disable-line react/prefer
     return (
       <div>
         <RoomsList />
+        <Chat />
         home
       </div>
     );
