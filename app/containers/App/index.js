@@ -1,29 +1,69 @@
-/**
- *
- * App.js
- *
- * This component is the skeleton around the actual pages, and should only
- * contain code that should be seen on all pages. (e.g. navigation bar)
- *
- * NOTE: while this component should technically be a stateless functional
- * component (SFC), hot reloading does not currently support SFCs. If hot
- * reloading is not a necessity for you then you can refactor it and remove
- * the linting exception.
- */
-
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import * as firebase from 'firebase';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { createStructuredSelector } from 'reselect';
 
 import HomePage from 'containers/HomePage/Loadable';
-import NotFoundPage from 'containers/NotFoundPage/Loadable';
+import LoginPage from 'containers/LoginPage';
+import { loggingError, userLoggedIn, userNotLoggedIn } from 'containers/App/actions';
+import { makeSelectLoading, makeSelectLoggedIn } from 'containers/App/selectors';
+import LoadingScreen from 'containers/App/LoadingScreen';
 
-export default function App() {
-  return (
-    <div>
-      <Switch>
-        <Route exact path="/" component={HomePage} />
-        <Route component={NotFoundPage} />
-      </Switch>
-    </div>
-  );
+import config from '../../../config.json';
+
+export class App extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+
+  // Check if user is logged in or not using firebase
+  componentDidMount() {
+    firebase.initializeApp(config.firebase);
+
+    firebase.auth().getRedirectResult().then((result) => {
+      if (result.user) {
+        this.props.userLoggedIn(result.user);
+      } else {
+        this.props.userNotLoggedIn();
+      }
+    }).catch((error) => {
+      this.props.loggingError(error.message);
+    });
+  }
+
+  render() {
+    if (this.props.loading) {
+      return <LoadingScreen />;
+    }
+
+    return this.props.loggedIn ?
+      <HomePage /> :
+      <LoginPage />;
+  }
 }
+
+App.propTypes = {
+  userNotLoggedIn: PropTypes.func,
+  userLoggedIn: PropTypes.func,
+  loggingError: PropTypes.func,
+  loading: PropTypes.bool,
+  loggedIn: PropTypes.bool,
+};
+
+export function mapDispatchToProps(dispatch) {
+  return {
+    userNotLoggedIn: () => dispatch(userNotLoggedIn()),
+    userLoggedIn: (user) => dispatch(userLoggedIn(user)),
+    loggingError: (message) => dispatch(loggingError(message)),
+  };
+}
+
+const mapStateToProps = createStructuredSelector({
+  loading: makeSelectLoading(),
+  loggedIn: makeSelectLoggedIn(),
+});
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+
+export default compose(
+  withConnect,
+)(App);

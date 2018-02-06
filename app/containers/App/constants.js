@@ -1,0 +1,5 @@
+
+export const USER_NOT_LOGGED_IN = 'USER_NOT_LOGGED_IN';
+export const USER_LOGGED_IN = 'USER_LOGGED_IN';
+export const LOGGING_ERROR = 'LOGGING_ERROR';
+export const FACEBOOK_LOGIN = 'FACEBOOK_LOGIN';
