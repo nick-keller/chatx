@@ -20,6 +20,7 @@ const facebookProvider = new firebase.auth.FacebookAuthProvider();
 function appReducer(state = initialState, action) {
   switch (action.type) {
     case FACEBOOK_LOGIN:
+      // Redirect to facebook using firebase
       firebase.auth().signInWithRedirect(facebookProvider);
       return state;
     case USER_NOT_LOGGED_IN:
@@ -28,7 +29,7 @@ function appReducer(state = initialState, action) {
         .set('loading', false)
         .set('currentUser', false);
     case USER_LOGGED_IN:
-      // When the user is logged in we save / update his info in the DB
+      // When the user logges in we save / update his info in the DB
       firebase.database().ref(`users/${action.user.uid}`).set({
         displayName: action.user.displayName,
         photoURL: action.user.photoURL,

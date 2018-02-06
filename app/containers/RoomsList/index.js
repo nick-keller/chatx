@@ -6,7 +6,6 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
 import injectReducer from 'utils/injectReducer';
-import styled from 'styled-components';
 import NewRoomInput from 'containers/RoomsList/NewRoomInput';
 
 import * as firebase from 'firebase';
@@ -15,17 +14,11 @@ import { makeSelectRoomsIds } from 'containers/RoomsList/selectors';
 import RoomItem from 'containers/RoomsList/RoomItem';
 
 import reducer from './reducer';
+import RoomsListContainer from './RoomsListContainer';
 
-const Container = styled.div`
-  position: absolute;
-  width: 250px;
-  height: 100vh;
-  top: 0;
-  left: 0;
-  border-right: solid 1px #CCCCCC;
-  box-sizing: border-box;
-`;
-
+/**
+ * A side panel to the left of the screen that shows available rooms and lets the user create one
+ */
 export class RoomsList extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   componentDidMount() {
     firebase.database().ref('rooms/').on('value', (snapshot) => {
@@ -35,10 +28,10 @@ export class RoomsList extends React.PureComponent { // eslint-disable-line reac
 
   render() {
     return (
-      <Container>
+      <RoomsListContainer>
         <NewRoomInput />
         { this.props.roomsIds.map((id) => <RoomItem key={id} id={id} />) }
-      </Container>
+      </RoomsListContainer>
     );
   }
 }

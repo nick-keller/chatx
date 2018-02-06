@@ -16,6 +16,9 @@ const Container = styled.div`
   font-size: 5em;
 `;
 
+/**
+ * A simple full screen spinner
+ */
 function LoadingScreen() {
   return (
     <Container>

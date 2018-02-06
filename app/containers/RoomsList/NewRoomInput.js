@@ -5,19 +5,15 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
-import styled from 'styled-components';
 import { makeSelectCurrentUserId } from 'containers/App/selectors';
 import * as firebase from 'firebase';
 
-const Input = styled.input`
-  background: #F6F7F9;
-  line-height: 30px;
-  width: 230px;
-  padding: 0 10px;
-  box-sizing: border-box;
-  margin: 10px;
-`;
+import { enterRoom } from 'containers/App/actions';
+import NewInput from './NewInput';
 
+/**
+ * A simple input that creates a room when the user presses Enter
+ */
 export class NewRoomInput extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
@@ -26,11 +22,15 @@ export class NewRoomInput extends React.PureComponent { // eslint-disable-line r
 
   onKeyPress = (evt) => {
     if (evt.key === 'Enter') {
-      firebase.database().ref('rooms/').push().set({
+      const roomsRef = firebase.database().ref('rooms/');
+      const roomId = roomsRef.push().key;
+
+      roomsRef.child(roomId).set({
         name: evt.target.value,
         users: { [this.props.userId]: true },
       });
 
+      this.props.enterRoom(roomId);
       this.setState({ name: '' });
       evt.preventDefault();
     }
@@ -42,7 +42,7 @@ export class NewRoomInput extends React.PureComponent { // eslint-disable-line r
 
   render() {
     return (
-      <Input
+      <NewInput
         onChange={this.onChange}
         value={this.state.name}
         placeholder="New room..."
@@ -54,6 +54,7 @@ export class NewRoomInput extends React.PureComponent { // eslint-disable-line r
 
 NewRoomInput.propTypes = {
   userId: PropTypes.string,
+  enterRoom: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -62,6 +63,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
+    enterRoom: (id) => dispatch(enterRoom(id)),
   };
 }
 

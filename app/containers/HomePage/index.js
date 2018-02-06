@@ -21,6 +21,9 @@ import { updateUsersList } from 'containers/HomePage/actions';
 import RoomsList from 'containers/RoomsList';
 import Chat from 'containers/Chat';
 
+/**
+ * The homepage fetches the list of users and displays basic elements on the page
+ */
 class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   componentDidMount() {
     firebase.database().ref('users/').on('value', (snapshot) => {

@@ -13,8 +13,15 @@ import { enterRoom } from 'containers/App/actions';
 
 const Div = styled.div`
   padding: 10px;
+  
+  &.active {
+    background: #F2F2F2;
+  }
 `;
 
+/**
+ * An basic item in the rooms list, enters the room when clicked
+ */
 export class RoomItem extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   enterRoom = () => {
     this.props.enterRoom();
@@ -23,8 +30,8 @@ export class RoomItem extends React.PureComponent { // eslint-disable-line react
 
   render() {
     return (
-      <Div onClick={this.enterRoom} style={{ background: this.props.isCurrentRoom && '#F2F2F2' }}>
-        {this.props.name}
+      <Div onClick={this.enterRoom} className={this.props.isCurrentRoom && 'active'} >
+        { this.props.name }
       </Div>
     );
   }

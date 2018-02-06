@@ -7,6 +7,9 @@ const makeSelectMessages = () => createSelector(
   (chatState) => chatState.get('messages'),
 );
 
+/**
+ * Select messages in bulks. a bulk is a list of consecutive messages bvy the same user
+ */
 const makeSelectMessagesBulked = () => createSelector(
   makeSelectMessages(),
   (messages) => {
@@ -16,6 +19,7 @@ const makeSelectMessagesBulked = () => createSelector(
 
     const bulks = [];
     let lastBulk = {
+      user: null,
       messages: [],
     };
 

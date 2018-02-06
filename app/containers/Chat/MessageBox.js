@@ -10,34 +10,9 @@ import { makeSelectCurrentRoomId, makeSelectCurrentUserId } from 'containers/App
 import * as firebase from 'firebase';
 import Icon from 'components/Icon';
 
-const Container = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 251px;
-  right: 0;
-  height: 50px;
-  border-top: solid 1px #CCCCCC;
-`;
-
-const Input = styled.input`
-  line-height: 50px;
-  border: none;
-  display: block;
-  width: 100%;
-  box-sizing: border-box;
-  padding: 0 30px;
-`;
-
-const Button = styled.button`
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 50px;
-  width: 50px;
-  line-height: 50px;
-  text-align: center;
-  color: #1787FB;
-`;
+import SendButton from './SendButton';
+import MessageInput from './MessageInput';
+import SendContainer from './SendContainer';
 
 export class MessageBox extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -72,17 +47,17 @@ export class MessageBox extends React.PureComponent { // eslint-disable-line rea
 
   render() {
     return (
-      <Container>
-        <Input
+      <SendContainer>
+        <MessageInput
           onChange={this.onChange}
           value={this.state.message}
           placeholder="Type a message..."
           onKeyPress={this.onKeyPress}
         />
-        <Button onClick={this.sendMessage}>
+        <SendButton onClick={this.sendMessage}>
           <Icon icon="paper-plane" />
-        </Button>
-      </Container>
+        </SendButton>
+      </SendContainer>
     );
   }
 }

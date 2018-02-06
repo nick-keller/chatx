@@ -13,6 +13,9 @@ import LoadingScreen from 'containers/App/LoadingScreen';
 
 import config from '../../../config.json';
 
+/**
+ * Main skeleton of our app, it simply shows either the login page or the home page
+ */
 export class App extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
   // Check if user is logged in or not using firebase
