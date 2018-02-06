@@ -9,9 +9,12 @@ import injectReducer from 'utils/injectReducer';
 import styled from 'styled-components';
 import NewRoomInput from 'containers/RoomsList/NewRoomInput';
 
-import reducer from './reducer';
-import * as firebase from "firebase";
+import * as firebase from 'firebase';
 import { updateRoomsList } from 'containers/RoomsList/actions';
+import { makeSelectRoomsIds } from 'containers/RoomsList/selectors';
+import RoomItem from 'containers/RoomsList/RoomItem';
+
+import reducer from './reducer';
 
 const Container = styled.div`
   position: absolute;
@@ -20,7 +23,6 @@ const Container = styled.div`
   top: 0;
   left: 0;
   border-right: solid 1px #CCCCCC;
-  padding: 10px;
   box-sizing: border-box;
 `;
 
@@ -35,6 +37,7 @@ export class RoomsList extends React.PureComponent { // eslint-disable-line reac
     return (
       <Container>
         <NewRoomInput />
+        { this.props.roomsIds.map((id) => <RoomItem key={id} id={id} />) }
       </Container>
     );
   }
@@ -42,9 +45,11 @@ export class RoomsList extends React.PureComponent { // eslint-disable-line reac
 
 RoomsList.propTypes = {
   updateRoomsList: PropTypes.func,
+  roomsIds: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
+  roomsIds: makeSelectRoomsIds(),
 });
 
 function mapDispatchToProps(dispatch) {

@@ -7,6 +7,11 @@ const makeSelectLoading = () => createSelector(
   (appState) => appState.get('loading')
 );
 
+const makeSelectCurrentRoomId = () => createSelector(
+  selectApp,
+  (appState) => appState.get('currentRoom')
+);
+
 const makeSelectCurrentUser = () => createSelector(
   selectApp,
   (appState) => appState.get('currentUser'),
@@ -26,4 +31,5 @@ export {
   makeSelectLoading,
   makeSelectLoggedIn,
   makeSelectCurrentUserId,
+  makeSelectCurrentRoomId,
 };

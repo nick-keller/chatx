@@ -2,13 +2,17 @@
 import { fromJS } from 'immutable';
 import * as firebase from 'firebase';
 
-import { FACEBOOK_LOGIN, LOGGING_ERROR, USER_LOGGED_IN, USER_NOT_LOGGED_IN } from 'containers/App/constants';
+import {
+  ENTER_ROOM, FACEBOOK_LOGIN, LOGGING_ERROR, USER_LOGGED_IN,
+  USER_NOT_LOGGED_IN,
+} from 'containers/App/constants';
 
 // The initial state of the App
 const initialState = fromJS({
   loading: true,
   error: false,
   currentUser: false,
+  currentRoom: false,
 });
 
 const facebookProvider = new firebase.auth.FacebookAuthProvider();
@@ -39,6 +43,9 @@ function appReducer(state = initialState, action) {
         .set('error', action.message)
         .set('loading', false)
         .set('currentUser', false);
+    case ENTER_ROOM:
+      return state
+        .set('currentRoom', action.id);
     default:
       return state;
   }

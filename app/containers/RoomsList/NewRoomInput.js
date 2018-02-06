@@ -12,10 +12,10 @@ import * as firebase from 'firebase';
 const Input = styled.input`
   background: #F6F7F9;
   line-height: 30px;
-  width: 100%;
+  width: 230px;
   padding: 0 10px;
   box-sizing: border-box;
-  margin-bottom: 10px;
+  margin: 10px;
 `;
 
 export class NewRoomInput extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
