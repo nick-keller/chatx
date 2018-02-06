@@ -1,19 +1,20 @@
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-
-import styled from 'styled-components';
-import { makeSelectCurrentRoomId, makeSelectCurrentUserId } from 'containers/App/selectors';
 import * as firebase from 'firebase';
-import Icon from 'components/Icon';
 
-import SendButton from './SendButton';
-import MessageInput from './MessageInput';
-import SendContainer from './SendContainer';
+import { makeSelectCurrentRoomId, makeSelectCurrentUserId } from 'containers/App/selectors';
 
+import Icon from 'components/Icon/index';
+import SendContainer from 'components/SendContainer/index';
+import SendButton from 'components/SendButton/index';
+import MessageInput from 'components/MessageInput/index';
+
+/**
+ * An horizontal container displayed at the bottom of the screen to send new messages
+ */
 export class MessageBox extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
@@ -72,12 +73,7 @@ const mapStateToProps = createStructuredSelector({
   currentUserId: makeSelectCurrentUserId(),
 });
 
-function mapDispatchToProps(dispatch) {
-  return {
-  };
-}
-
-const withConnect = connect(mapStateToProps, mapDispatchToProps);
+const withConnect = connect(mapStateToProps, null);
 
 export default compose(
   withConnect,

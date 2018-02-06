@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 
-const NewInput = styled.input`
+const NewRoomInput = styled.input`
   background: #F6F7F9;
   line-height: 30px;
   width: 230px;
@@ -11,4 +11,4 @@ const NewInput = styled.input`
   border-radius: 4px;
 `;
 
-export default NewInput;
+export default NewRoomInput;

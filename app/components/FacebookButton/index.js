@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 
-const Button = styled.button`
+const FacebookButton = styled.button`
   border: solid 1px white;
   padding: 0 20px;
   line-height: 40px;
@@ -14,4 +14,4 @@ const Button = styled.button`
   }
 `;
 
-export default Button;
+export default FacebookButton;

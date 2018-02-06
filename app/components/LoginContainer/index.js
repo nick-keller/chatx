@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 
-const Container = styled.div`
+const LoginContainer = styled.div`
   position: absolute;
   z-index: 500;
   width: 100vw;
@@ -14,4 +14,4 @@ const Container = styled.div`
   line-height: 100vh;
 `;
 
-export default Container;
+export default LoginContainer;

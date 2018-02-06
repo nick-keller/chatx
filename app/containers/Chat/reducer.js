@@ -1,9 +1,3 @@
-/*
- *
- * Chat reducer
- *
- */
-
 import { fromJS } from 'immutable';
 import { CLEAR_MESSAGES, RECEIVED_MESSAGE, UPDATE_MESSAGES_LIST } from 'containers/Chat/constants';
 

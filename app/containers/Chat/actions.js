@@ -1,4 +1,3 @@
-
 import { CLEAR_MESSAGES, RECEIVED_MESSAGE } from 'containers/Chat/constants';
 
 /**

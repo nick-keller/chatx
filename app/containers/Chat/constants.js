@@ -1,3 +1,2 @@
-
 export const RECEIVED_MESSAGE = 'RECEIVED_MESSAGE';
 export const CLEAR_MESSAGES = 'CLEAR_MESSAGES';

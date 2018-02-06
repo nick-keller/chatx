@@ -1,20 +1,19 @@
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
+import * as firebase from 'firebase';
 
 import injectReducer from 'utils/injectReducer';
-import NewRoomInput from 'containers/RoomsList/NewRoomInput';
-
-import * as firebase from 'firebase';
 import { updateRoomsList } from 'containers/RoomsList/actions';
 import { makeSelectRoomsIds } from 'containers/RoomsList/selectors';
-import RoomItem from 'containers/RoomsList/RoomItem';
+
+import RoomItem from 'containers/RoomItem';
+import NewRoomInput from 'containers/NewRoomInput';
+import RoomsListContainer from 'components/RoomsListContainer';
 
 import reducer from './reducer';
-import RoomsListContainer from './RoomsListContainer';
 
 /**
  * A side panel to the left of the screen that shows available rooms and lets the user create one

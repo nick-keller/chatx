@@ -1,4 +1,3 @@
-
 import { fromJS } from 'immutable';
 import { UPDATE_ROOMS_LIST } from 'containers/RoomsList/constants';
 

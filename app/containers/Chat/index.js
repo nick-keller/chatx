@@ -1,26 +1,24 @@
-/**
- *
- * Chat
- *
- */
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
+import * as firebase from 'firebase';
 
 import injectReducer from 'utils/injectReducer';
-import MessageBox from 'containers/Chat/MessageBox';
-import * as firebase from 'firebase';
 import { makeSelectCurrentRoomId } from 'containers/App/selectors';
 import { clearMessages, receivedMessage } from 'containers/Chat/actions';
 import { makeSelectMessagesBulked } from 'containers/Chat/selectors';
-import MessageBulk from 'containers/Chat/MessageBulk';
+
+import MessageBulk from 'containers/MessageBulk';
+import MessageBox from 'containers/MessageBox';
+import MessagesContainer from 'components/MessagesContainer';
 
 import reducer from './reducer';
-import MessagesContainer from './MessagesContainer';
 
+/**
+ * The chat, the main focus of the app, composed of a large list of messages and a message input at the bottom
+ */
 export class Chat extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
   constructor(props) {
@@ -60,10 +58,8 @@ export class Chat extends React.PureComponent { // eslint-disable-line react/pre
     });
   }
 
-  /**
-   * We use the div we placed at the bottom of the list to scroll to the bottom
-   */
   scrollToBottom = () => {
+    // We use the div we placed at the bottom of the list to scroll to the bottom
     this.messagesEnd.scrollIntoView({ behavior: 'smooth' });
   };
 

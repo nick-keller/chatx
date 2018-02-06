@@ -5,11 +5,12 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 
-import HomePage from 'containers/HomePage/Loadable';
-import LoginPage from 'containers/LoginPage';
 import { loggingError, userLoggedIn, userNotLoggedIn } from 'containers/App/actions';
 import { makeSelectLoading, makeSelectLoggedIn } from 'containers/App/selectors';
-import LoadingScreen from 'containers/App/LoadingScreen';
+
+import HomePage from 'containers/HomePage/Loadable';
+import LoginPage from 'containers/LoginPage';
+import LoadingScreen from 'components/LoadingScreen';
 
 import config from '../../../config.json';
 
