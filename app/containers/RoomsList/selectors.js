@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import { makeSelectCurrentRoomId } from 'containers/App/selectors';
+import { makeSelectUsersById } from 'containers/HomePage/selectors';
 
 const selectRooms = (state) => state.get('rooms');
 
@@ -24,6 +25,13 @@ const makeSelectRoomName = () => createSelector(
   (room) => room.get('name'),
 );
 
+const makeSelectFirstFourPhotoURL = () => createSelector(
+  makeSelectRoom(),
+  makeSelectUsersById(),
+  (room, usersById) => room.get('users').keySeq().slice(0, 4) // First 4 users
+    .map((id) => usersById.getIn([id, 'photoURL'])).toJS(), // Only get photoURL
+);
+
 const makeSelectIsCurrentRoom = () => createSelector(
   makeSelectCurrentRoomId(),
   (_, props) => props.id,
@@ -34,4 +42,5 @@ export {
   makeSelectRoomsIds,
   makeSelectRoomName,
   makeSelectIsCurrentRoom,
+  makeSelectFirstFourPhotoURL,
 };

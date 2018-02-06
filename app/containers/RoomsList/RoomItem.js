@@ -8,7 +8,10 @@ import { compose } from 'redux';
 import styled from 'styled-components';
 import { makeSelectCurrentUserId } from 'containers/App/selectors';
 import * as firebase from 'firebase';
-import { makeSelectIsCurrentRoom, makeSelectRoomName } from 'containers/RoomsList/selectors';
+import {
+  makeSelectFirstFourPhotoURL, makeSelectIsCurrentRoom,
+  makeSelectRoomName,
+} from 'containers/RoomsList/selectors';
 import { enterRoom } from 'containers/App/actions';
 
 const Div = styled.div`
@@ -17,6 +20,35 @@ const Div = styled.div`
   &.active {
     background: #F2F2F2;
   }
+`;
+
+const Preview = styled.div`
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  background: #404040;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 10px;
+  overflow: hidden;
+  
+  div {
+    width: 50%;
+    height: 50%;
+    background-size: cover;
+    display: inline-block;
+    box-shadow: -1px -1px 0 white;
+  }
+  
+  div:only-child {
+    width: 100%;
+    height: 100%;
+  }
+  
+  div:first-child:nth-last-child(2),
+  div:first-child:nth-last-child(2) ~ div {
+    height: 100%;
+}
 `;
 
 /**
@@ -31,6 +63,9 @@ export class RoomItem extends React.PureComponent { // eslint-disable-line react
   render() {
     return (
       <Div onClick={this.enterRoom} className={this.props.isCurrentRoom && 'active'} >
+        <Preview>
+          { this.props.photosURL.map((url) => <div key={url} style={{ backgroundImage: `url(${url})` }} />) }
+        </Preview>
         { this.props.name }
       </Div>
     );
@@ -43,12 +78,14 @@ RoomItem.propTypes = {
   enterRoom: PropTypes.func,
   isCurrentRoom: PropTypes.bool,
   currentUserId: PropTypes.string,
+  photosURL: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
   name: makeSelectRoomName(),
   isCurrentRoom: makeSelectIsCurrentRoom(),
   currentUserId: makeSelectCurrentUserId(),
+  photosURL: makeSelectFirstFourPhotoURL(),
 });
 
 function mapDispatchToProps(dispatch, props) {

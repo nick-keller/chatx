@@ -8,6 +8,7 @@ const NewInput = styled.input`
   padding: 0 10px;
   box-sizing: border-box;
   margin: 10px;
+  border-radius: 4px;
 `;
 
 export default NewInput;

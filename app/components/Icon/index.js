@@ -12,7 +12,7 @@ class Icon extends React.PureComponent { // eslint-disable-line react/prefer-sta
 }
 
 Icon.propTypes = {
-  icon: PropTypes.string.isRequired,
+  icon: PropTypes.string,
   fixedWidth: PropTypes.bool,
   loading: PropTypes.bool,
   type: PropTypes.oneOf(['b', 's', 'r']),
