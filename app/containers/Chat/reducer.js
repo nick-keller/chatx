@@ -5,7 +5,7 @@
  */
 
 import { fromJS } from 'immutable';
-import { RECEIVED_MESSAGE, UPDATE_MESSAGES_LIST } from 'containers/Chat/constants';
+import { CLEAR_MESSAGES, RECEIVED_MESSAGE, UPDATE_MESSAGES_LIST } from 'containers/Chat/constants';
 
 const initialState = fromJS({
   messages: [],
@@ -13,12 +13,12 @@ const initialState = fromJS({
 
 function chatReducer(state = initialState, action) {
   switch (action.type) {
-    case UPDATE_MESSAGES_LIST:
+    case CLEAR_MESSAGES:
       return state
-        .set('messages', fromJS(action.messages || {}));
+        .set('messages', fromJS([]));
     case RECEIVED_MESSAGE:
       return state
-        .setIn(['messages', action.id], fromJS(action.message));
+        .update('messages', (messages) => messages.push(fromJS(action.message)));
     default:
       return state;
   }

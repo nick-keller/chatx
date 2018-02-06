@@ -14,7 +14,7 @@ import injectReducer from 'utils/injectReducer';
 import MessageBox from 'containers/Chat/MessageBox';
 import * as firebase from 'firebase';
 import { makeSelectCurrentRoomId } from 'containers/App/selectors';
-import { receivedMessage, updateMessagesList } from 'containers/Chat/actions';
+import { clearMessages, receivedMessage, updateMessagesList } from 'containers/Chat/actions';
 import { makeSelectMessagesBulked } from 'containers/Chat/selectors';
 import MessageBulk from 'containers/Chat/MessageBulk';
 import styled from 'styled-components';
@@ -49,26 +49,32 @@ export class Chat extends React.PureComponent { // eslint-disable-line react/pre
   }
 
   getAllMessages(roomId) {
-    firebase.database().ref(`messages/${roomId}`).once('value', (snapshot) => {
-      this.props.updateMessagesList(snapshot.val());
-    });
+    this.props.clearMessages();
 
     if (this.messagesRef) {
       this.messagesRef.off('child_added');
     }
 
-    this.messagesRef = firebase.database().ref(`messages/${roomId}`);
+    this.messagesRef = firebase.database().ref(`messages/${roomId}`).limitToLast(10);
 
     this.messagesRef.on('child_added', (data) => {
       this.props.receivedMessage(data.key, data.val());
+      setTimeout(() => { this.scrollToBottom() }, 0);
     });
   }
+
+  scrollToBottom = () => {
+    this.messagesEnd.scrollIntoView({ behavior: 'smooth' });
+  };
 
   render() {
     return (
       <div>
         <MessagesContainer>
           { this.props.messages.map((bulk) => <MessageBulk key={bulk.id} {...bulk} />) }
+          <div
+            ref={(el) => { this.messagesEnd = el; }}
+          />
         </MessagesContainer>
         <MessageBox />
       </div>
@@ -81,6 +87,7 @@ Chat.propTypes = {
   updateMessagesList: PropTypes.func,
   receivedMessage: PropTypes.func,
   messages: PropTypes.array,
+  clearMessages: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -92,6 +99,7 @@ function mapDispatchToProps(dispatch) {
   return {
     updateMessagesList: (messages) => dispatch(updateMessagesList(messages)),
     receivedMessage: (id, message) => dispatch(receivedMessage(id, message)),
+    clearMessages: () => dispatch(clearMessages()),
   };
 }
 

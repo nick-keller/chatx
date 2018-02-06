@@ -8,6 +8,7 @@ import { compose } from 'redux';
 import styled from 'styled-components';
 import { makeSelectCurrentRoomId, makeSelectCurrentUserId } from 'containers/App/selectors';
 import * as firebase from 'firebase';
+import Icon from 'components/Icon';
 
 const Container = styled.div`
   position: absolute;
@@ -27,22 +28,60 @@ const Input = styled.input`
   padding: 0 30px;
 `;
 
+const Button = styled.button`
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 50px;
+  width: 50px;
+  line-height: 50px;
+  text-align: center;
+  color: #1787FB;
+`;
+
 export class MessageBox extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+  constructor(props) {
+    super(props);
+    this.state = { message: '' };
+  }
+
   onKeyPress = (evt) => {
     if (evt.key === 'Enter') {
-      firebase.database().ref(`messages/${this.props.currentRoomId}`).push().set({
-        message: evt.target.value,
-        user: this.props.currentUserId,
-      });
-
+      this.sendMessage();
       evt.preventDefault();
     }
+  };
+
+  onChange = (evt) => {
+    this.setState({ message: evt.target.value });
+  };
+
+  sendMessage = () => {
+    // Prevent sending empty messages
+    if (!this.state.message) {
+      return;
+    }
+
+    firebase.database().ref(`messages/${this.props.currentRoomId}`).push().set({
+      message: this.state.message,
+      user: this.props.currentUserId,
+    });
+
+    this.setState({ message: '' });
   };
 
   render() {
     return (
       <Container>
-        <Input placeholder="Type a message..." onKeyPress={this.onKeyPress} />
+        <Input
+          onChange={this.onChange}
+          value={this.state.message}
+          placeholder="Type a message..."
+          onKeyPress={this.onKeyPress}
+        />
+        <Button onClick={this.sendMessage}>
+          <Icon icon="paper-plane" />
+        </Button>
       </Container>
     );
   }

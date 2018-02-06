@@ -19,6 +19,11 @@ const Input = styled.input`
 `;
 
 export class NewRoomInput extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+  constructor(props) {
+    super(props);
+    this.state = { name: '' };
+  }
+
   onKeyPress = (evt) => {
     if (evt.key === 'Enter') {
       firebase.database().ref('rooms/').push().set({
@@ -26,13 +31,23 @@ export class NewRoomInput extends React.PureComponent { // eslint-disable-line r
         users: { [this.props.userId]: true },
       });
 
+      this.setState({ name: '' });
       evt.preventDefault();
     }
   };
 
+  onChange = (evt) => {
+    this.setState({ name: evt.target.value });
+  };
+
   render() {
     return (
-      <Input placeholder="New room..." onKeyPress={this.onKeyPress} />
+      <Input
+        onChange={this.onChange}
+        value={this.state.name}
+        placeholder="New room..."
+        onKeyPress={this.onKeyPress}
+      />
     );
   }
 }

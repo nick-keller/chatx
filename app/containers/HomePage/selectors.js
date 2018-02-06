@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+import { makeSelectCurrentUserId } from 'containers/App/selectors';
 
 const selectUsers = (state) => state.get('users');
 
@@ -18,7 +19,14 @@ const makeSelectPhotoURL = () => createSelector(
   (user) => user.get('photoURL'),
 );
 
+const makeSelectIsMe = () => createSelector(
+  makeSelectCurrentUserId(),
+  (_, props) => props.user,
+  (currentUserId, me) => currentUserId === me,
+);
+
 export {
   makeSelectDisplayName,
   makeSelectPhotoURL,
+  makeSelectIsMe,
 };

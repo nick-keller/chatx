@@ -8,11 +8,16 @@ import { compose } from 'redux';
 import styled from 'styled-components';
 import { makeSelectCurrentRoomId, makeSelectCurrentUserId } from 'containers/App/selectors';
 import * as firebase from 'firebase';
-import { makeSelectDisplayName, makeSelectPhotoURL } from 'containers/HomePage/selectors';
+import { makeSelectDisplayName, makeSelectIsMe, makeSelectPhotoURL } from 'containers/HomePage/selectors';
 
 const Container = styled.div`
-  padding: 20px 12px 20px 50px;
+  padding: 10px 12px 10px 50px;
   position: relative;
+  
+  &.me {
+    text-align: right;
+    padding: 10px 50px 10px 12px;
+  }
 `;
 
 const Name = styled.div`
@@ -28,6 +33,11 @@ const Bubble = styled.div`
   max-width: 95%;
   line-height: 17px;
   display: inline-block;
+  
+  .me & {
+    background: #1787FB;
+    color: white;
+  }
 `;
 
 const Photo = styled.div`
@@ -37,14 +47,19 @@ const Photo = styled.div`
   background: #4e4e4e;
   position: absolute;
   left: 12px;
-  bottom: 21px;
+  bottom: 11px;
   background-size: cover;
+  
+  .me & {
+    right: 12px;
+    left: auto;
+  }
 `;
 
 export class MessageBulk extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
-      <Container>
+      <Container className={this.props.isMe ? 'me' : ''}>
         <Name>
           { this.props.displayName }
         </Name>
@@ -62,11 +77,13 @@ MessageBulk.propTypes = {
   displayName: PropTypes.string,
   photoURL: PropTypes.string,
   messages: PropTypes.array,
+  isMe: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
   displayName: makeSelectDisplayName(),
   photoURL: makeSelectPhotoURL(),
+  isMe: makeSelectIsMe(),
 });
 
 function mapDispatchToProps(dispatch) {

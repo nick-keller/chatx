@@ -33,7 +33,6 @@ class HomePage extends React.PureComponent { // eslint-disable-line react/prefer
       <div>
         <RoomsList />
         <Chat />
-        home
       </div>
     );
   }
