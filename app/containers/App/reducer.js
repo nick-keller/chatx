@@ -24,6 +24,12 @@ function appReducer(state = initialState, action) {
         .set('loading', false)
         .set('currentUser', false);
     case USER_LOGGED_IN:
+      // When the user is logged in we save / update his info in the DB
+      firebase.database().ref(`users/${action.user.uid}`).set({
+        displayName: action.user.displayName,
+        photoURL: action.user.photoURL,
+      });
+
       return state
         .set('error', false)
         .set('loading', false)

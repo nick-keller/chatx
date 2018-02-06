@@ -10,13 +10,48 @@
  */
 
 import React from 'react';
+import { compose } from 'redux';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import injectReducer from 'utils/injectReducer';
+import reducer from 'containers/HomePage/reducer';
+import * as firebase from 'firebase';
+import { updateUsersList } from 'containers/HomePage/actions';
 
-export default class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+  componentDidMount() {
+    firebase.database().ref('users/').on('value', (snapshot) => {
+      this.props.updateUsersList(snapshot.val());
+    });
+  }
+
   render() {
     return (
-      <h1>
+      <div>
         This is HomePage component!
-      </h1>
+      </div>
     );
   }
 }
+
+HomePage.propTypes = {
+  updateUsersList: PropTypes.func,
+};
+
+export function mapDispatchToProps(dispatch) {
+  return {
+    updateUsersList: (usersById) => dispatch(updateUsersList(usersById)),
+  };
+}
+
+const mapStateToProps = createStructuredSelector({
+});
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+const withReducer = injectReducer({ key: 'chat', reducer });
+
+export default compose(
+  withReducer,
+  withConnect,
+)(HomePage);
