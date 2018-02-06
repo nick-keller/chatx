@@ -2,7 +2,7 @@ import { fromJS } from 'immutable';
 import { UPDATE_USERS_LIST } from 'containers/HomePage/constants';
 
 const initialState = fromJS({
-  users: [],
+  ids: [],
   usersById: {},
 });
 
@@ -10,7 +10,7 @@ function chatReducer(state = initialState, action) {
   switch (action.type) {
     case UPDATE_USERS_LIST:
       return state
-        .set('users', Object.keys(action.usersById))
+        .set('ids', Object.keys(action.usersById))
         .set('usersById', fromJS(action.usersById));
     default:
       return state;

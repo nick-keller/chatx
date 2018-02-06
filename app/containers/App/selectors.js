@@ -7,12 +7,23 @@ const makeSelectLoading = () => createSelector(
   (appState) => appState.get('loading')
 );
 
-const makeSelectLoggedIn = () => createSelector(
+const makeSelectCurrentUser = () => createSelector(
   selectApp,
-  (appState) => appState.get('currentUser') !== false,
+  (appState) => appState.get('currentUser'),
+);
+
+const makeSelectLoggedIn = () => createSelector(
+  makeSelectCurrentUser(),
+  (currentUser) => currentUser !== false,
+);
+
+const makeSelectCurrentUserId = () => createSelector(
+  makeSelectCurrentUser(),
+  (currentUser) => currentUser && currentUser.uid,
 );
 
 export {
   makeSelectLoading,
   makeSelectLoggedIn,
+  makeSelectCurrentUserId,
 };

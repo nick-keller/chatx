@@ -1,11 +1,6 @@
 import { createSelector } from 'reselect';
 
-const selectChat = (state) => state.get('chat');
-
-// const makeSelectFilter = () => createSelector(
-//   selectChat,
-//   (chatState) => chatState.get('test')
-// );
+const selectUsers = (state) => state.get('users');
 
 export {
 };

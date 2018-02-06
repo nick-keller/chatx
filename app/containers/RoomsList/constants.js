@@ -1,0 +1,2 @@
+
+export const UPDATE_ROOMS_LIST = 'UPDATE_ROOMS_LIST';

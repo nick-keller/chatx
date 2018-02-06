@@ -18,6 +18,7 @@ import injectReducer from 'utils/injectReducer';
 import reducer from 'containers/HomePage/reducer';
 import * as firebase from 'firebase';
 import { updateUsersList } from 'containers/HomePage/actions';
+import RoomsList from 'containers/RoomsList';
 
 class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   componentDidMount() {
@@ -29,7 +30,8 @@ class HomePage extends React.PureComponent { // eslint-disable-line react/prefer
   render() {
     return (
       <div>
-        This is HomePage component!
+        <RoomsList />
+        home
       </div>
     );
   }
@@ -49,7 +51,7 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
-const withReducer = injectReducer({ key: 'chat', reducer });
+const withReducer = injectReducer({ key: 'users', reducer });
 
 export default compose(
   withReducer,
